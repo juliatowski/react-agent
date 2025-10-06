@@ -1,0 +1,27 @@
+[project]
+name = "react-agent"
+version = "0.1.0"
+description = "A ReAct-inspired agent with local LLMs"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+
+dependencies = [
+    "requests>=2.31.0",
+    "ddgs>=1.9.0",            # use maintained DuckDuckGo search lib
+    "wikipedia>=1.4.0",       # Wikipedia lookup
+    "faiss-cpu>=1.7.4",       # vector search (swap for chromadb if you prefer)
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+]
+
+[tool.pytest.ini_options]
+markers = [
+    "integration: marks tests as integration (calls LLM, slow)"
+]
+
+[project.scripts]
+react-agent = "react_agent.__main__:main"

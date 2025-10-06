@@ -1,0 +1,4 @@
+Artificial intelligence (AI) is a field of computer science focused on building systems capable of performing tasks that typically require human intelligence. 
+AI research in Vienna is supported by universities like TU Wien and research institutes focusing on robotics, natural language processing, and ethics of AI.
+Berlin has a strong AI ecosystem with organizations like the German Research Center for Artificial Intelligence (DFKI) and several AI startups. The city also hosts conferences on applied machine learning.
+Both Vienna and Berlin contribute to Europe's AI research landscape, but with different strengths: Vienna in ethics and academic research, Berlin in startups and applied AI.

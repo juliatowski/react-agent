@@ -1,0 +1,7 @@
+requests>=2.31.0
+ddgs>=1.9.0
+wikipedia>=1.4.0
+faiss-cpu>=1.7.4
+
+[dev]
+pytest>=8.0.0

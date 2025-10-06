@@ -1,0 +1,13 @@
+Metadata-Version: 2.4
+Name: react-agent
+Version: 0.1.0
+Summary: A ReAct-inspired agent with local LLMs
+License: MIT
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+Requires-Dist: requests>=2.31.0
+Requires-Dist: ddgs>=1.9.0
+Requires-Dist: wikipedia>=1.4.0
+Requires-Dist: faiss-cpu>=1.7.4
+Provides-Extra: dev
+Requires-Dist: pytest>=8.0.0; extra == "dev"
