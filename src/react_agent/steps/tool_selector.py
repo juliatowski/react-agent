@@ -37,7 +37,7 @@ Now return ONLY valid JSON:
     try:
         return json.loads(raw)
     except Exception:
-        # Fallback: keyword heuristics per subtask, will be improved/extended later 
+        # Fallback: keyword heuristics per subtask, will be improved/extended later or use different method 
         def heuristic(sub: str) -> str:
             s = sub.lower()
             if any(w in s for w in ["calculate", "sum", "multiply", "add", "divide", "evaluate", "number"]):
