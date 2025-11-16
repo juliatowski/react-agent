@@ -1,35 +1,41 @@
+import json
+from react_agent.llm_client import LLMClient
 from react_agent.tools import get_tool
 from react_agent.tools.json_protocol import tool_error
-from react_agent.llm_client import LLMClient
 
 
-def execute_single_subtask(subtask: str, tool_name: str, model: str) -> dict:
+def execute_single_subtask(subtask_json: str, tool_name: str, model: str) -> str:
     """
-    Execute a single subtask.
-       - If no tool is selected, fallback to LLM
-       - Otherwise use registry to fetch tool and run it
-    Returns a dictionary in the standard tool JSON format.
+    JSON-only version.
+    Input:
+        subtask_json = {"subtask": "..."}
+        tool_name = string or None
+    Output:
+        JSON string
     """
 
-    # Case 1: No tool selected → fall back to LLM
+    subtask = json.loads(subtask_json)["subtask"]
+
+    # Case 1 — no tool selected → LLM fallback
     if not tool_name:
         client = LLMClient(model)
-        reply = client.chat(subtask)
-        return {
+        answer = client.chat(subtask)
+        return json.dumps({
             "tool": "llm",
             "subtask": subtask,
             "ok": True,
-            "result": reply,
-            "error": None,
-        }
+            "result": answer,
+            "error": None
+        })
 
-    # Case 2: Tool selected, but not found in registry
-    tool_spec = get_tool(tool_name)
-    if tool_spec is None:
-        return tool_error(tool_name, subtask, f"Tool '{tool_name}' not found.")
+    # Case 2 — tool missing
+    tool = get_tool(tool_name)
+    if tool is None:
+        return json.dumps(tool_error(tool_name, subtask, f"Tool '{tool_name}' not found."))
 
-    # Case 3: Execute the tool
+    # Case 3 — run tool
     try:
-        return tool_spec.runner(subtask)
+        result_dict = tool.runner(subtask)
+        return json.dumps(result_dict)
     except Exception as e:
-        return tool_error(tool_name, subtask, str(e))
+        return json.dumps(tool_error(tool_name, subtask, str(e)))

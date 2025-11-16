@@ -1,26 +1,29 @@
-from typing import Dict, List
+import json
+from typing import List
 from react_agent.tools import list_tools
 from react_agent.llm_client import LLMClient
 
 
-def assign_tools_to_subtasks(subtasks: List[str], model: str = "qwen2.5"):
+def assign_tools_to_subtasks(subtasks_json: str, model: str = "qwen2.5") -> str:
     """
-    Decide which tool to use for each subtask.
-    Uses the registry to access available tools.
+    JSON-only version.
 
-    Returns:
-      {subtask: tool_name or None}
+    Input:
+        subtasks_json = {"subtasks": [...]}
+
+    Output:
+        JSON string: {"mapping": {subtask: tool_name or null}}
     """
+
+    subtasks = json.loads(subtasks_json)["subtasks"]
 
     client = LLMClient(model)
     available = list_tools()
 
-    # Build tool descriptions for LLM ranking
-    tools_descr = "\n".join(
-        f"- {t.name}: {t.description}" for t in available
-    )
+    tools_descr = "\n".join(f"- {t.name}: {t.description}" for t in available)
+    tool_names = [t.name.lower() for t in available]
 
-    mapping: Dict[str, str] = {}
+    mapping = {}
 
     for subtask in subtasks:
         prompt = f"""
@@ -36,11 +39,7 @@ Subtask: "{subtask}"
 """
 
         choice = client.chat(prompt).strip().lower()
-        tool_names = [t.name.lower() for t in available]
 
-        if choice in tool_names:
-            mapping[subtask] = choice
-        else:
-            mapping[subtask] = None
+        mapping[subtask] = choice if choice in tool_names else None
 
-    return mapping
+    return json.dumps({"mapping": mapping})

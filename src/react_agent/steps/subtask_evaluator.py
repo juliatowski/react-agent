@@ -2,20 +2,12 @@ import json
 from react_agent.llm_client import LLMClient
 
 
-def evaluate_subtask(subtask: str, result: str, model: str = "qwen2.5") -> tuple[str, float, bool]:
+def evaluate_subtask(subtask: str, result: str, model: str = "qwen2.5") -> str:
     """
     Use an LLM to evaluate whether a single subtask result is correct.
-
-    Args:
-        subtask: the subtask description/question
-        result: the produced answer for the subtask
-        model: which LLM to use
-
-    Returns:
-        (result, score, is_correct)
-        - score: float in [0, 1], confidence in correctness
-        - is_correct: True if score >= 0.5
+    Returns a JSON string.
     """
+
     client = LLMClient(model)
 
     prompt = f"""
@@ -38,11 +30,19 @@ Return ONLY valid JSON with fields:
 
     try:
         parsed = json.loads(raw)
-        return (
-            parsed.get("result", result),
-            float(parsed.get("score", 0.5)),
-            bool(parsed.get("is_correct", True)),
-        )
+        result_value = parsed.get("result", result)
+        score_value = float(parsed.get("score", 0.5))
+        correct_value = bool(parsed.get("is_correct", True))
+
     except Exception:
-        # fallback if LLM output is bad
-        return (result, 0.5, True)
+        # fallback if LLM output is invalid
+        result_value = result
+        score_value = 0.5
+        correct_value = True
+
+    # JSON output
+    return json.dumps({
+        "result": result_value,
+        "score": score_value,
+        "is_correct": correct_value
+    })

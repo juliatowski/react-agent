@@ -1,11 +1,16 @@
+import json
 from react_agent.llm_client import LLMClient
 
 
-def split_into_subtasks(goal: str, model: str = "qwen2.5", max_subtasks: int = 5) -> list[str]:
+def split_into_subtasks(goal: str, model: str = "qwen2.5", max_subtasks: int = 5) -> str:
     """
     Step 1: Given a goal, ask the LLM to split it into sequential subtasks.
     Maximum number of subtasks returned can be controlled.
+    
+    Returns:
+        JSON string: {"subtasks": [...]}
     """
+
     client = LLMClient(model)
 
     system_prompt = (
@@ -27,5 +32,7 @@ def split_into_subtasks(goal: str, model: str = "qwen2.5", max_subtasks: int = 5
             line = line.split(")", 1)[-1] if ")" in line[:3] else line
         steps.append(line.strip())
 
-    # Ensure we don't exceed max_subtasks
-    return steps[:max_subtasks]
+    steps = steps[:max_subtasks]
+
+    # JSON output
+    return json.dumps({"subtasks": steps})

@@ -1,28 +1,31 @@
-from typing import Dict, List
+import json
 from react_agent.steps.subtask_excecutor import execute_single_subtask
 
 
-def execute_subtasks(
-    subtasks: List[str],
-    tool_mapping: Dict[str, str],
-    model: str
-) -> List[dict]:
+def execute_subtasks(subtasks_json: str, mapping_json: str, model: str) -> str:
     """
-    Execute each subtask sequentially.
-    Returns a list of JSON dictionaries.
+    JSON-only version.
+
+    Inputs:
+        subtasks_json: {"subtasks": [...]}
+        mapping_json:  {"mapping": {...}}
+
+    Output:
+        JSON string: {"results": [ {...}, {...} ]}
     """
+
+    subtasks = json.loads(subtasks_json)["subtasks"]
+    mapping = json.loads(mapping_json)["mapping"]
 
     results = []
 
     for subtask in subtasks:
-        tool_name = tool_mapping.get(subtask)
-
-        result = execute_single_subtask(
-            subtask=subtask,
+        tool_name = mapping.get(subtask)
+        result_json = execute_single_subtask(
+            subtask_json=json.dumps({"subtask": subtask}),
             tool_name=tool_name,
             model=model
         )
+        results.append(json.loads(result_json))
 
-        results.append(result)
-
-    return results
+    return json.dumps({"results": results})
