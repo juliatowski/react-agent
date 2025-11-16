@@ -1,44 +1,58 @@
-Bachelor Thesis – ReAct Agent
+# Bachelor Thesis – ReAct Agent
 
 This repository contains the implementation for my bachelor thesis project on developing a ReAct-inspired agent for reasoning and tool use with local Large Language Models (LLMs).
 
-Quick Start
+## Quick Start
 
 Follow these steps after cloning the repository.
 
-1. Clone the repository
+### 1. Clone the repository
+
+```bash
 git clone https://github.com/juliatowski/react-agent.git
 cd react-agent
+```
 
-2. Create and activate a virtual environment
+### 2. Create and activate a virtual environment
 
 macOS / Linux:
 
+```bash
 python3 -m venv venv
 source venv/bin/activate
-
+```
 
 Windows (PowerShell):
 
+```powershell
 python -m venv venv
 venv\Scripts\Activate.ps1
+```
 
-3. Install dependencies
+### 3. Install dependencies
+
+```bash
 pip install -e .
 pip install langchain langchain-community langchain-text-splitters langchain-ollama faiss-cpu wikipedia
-
+```
 
 Note: To use local LLMs, install Ollama: https://ollama.com
 
-4. Run the agent
-python -m react_agent "Your prompt here"
+### 4. Run the agent
 
+```bash
+python -m react_agent "Your prompt here"
+```
 
 Example:
 
+```bash
 python -m react_agent "Summarize the history of AI"
+```
 
-Structure
+## Structure
+
+```bash
 src/
 ├── react_agent/
 │   ├── __init__.py
@@ -52,16 +66,20 @@ src/
 │   └── ai_research.txt      # Example data for vector search
 │
 └── tests/                   # Tests for individual parts of the code
+```
 
-Testing
+## Testing
 
 The tests folder contains integration and unit tests for individual components of the system. These tests can be run independently, without executing the entire pipeline.
 
-Run all tests:
+### Run all tests
 
+```bash
 pytest -q
+```
 
+### Run a specific test file
 
-Run a specific test file:
-
+```bash
 pytest tests/test_websearch_tool.py -q
+```
