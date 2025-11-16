@@ -1,57 +1,35 @@
+from react_agent.tools import get_tool
+from react_agent.tools.json_protocol import tool_error
+from react_agent.llm_client import LLMClient
 
-from typing import Dict, Tuple
-from react_agent.steps.subtask_evaluator import evaluate_subtask
-from react_agent.tools import TOOLS
 
-
-def execute_one_subtask(
-    subtask: str,
-    tool_name: str,
-    previous_results: Dict[str, str],
-    model: str = "qwen2.5",
-    threshold: float = 0.7,
-    max_retries: int = 2,
-) -> Tuple[str, float, bool]:
+def execute_single_subtask(subtask: str, tool_name: str, model: str) -> dict:
     """
-    Execute a single subtask with its tool, optionally using previous results as context.
-
-    Args:
-        subtask: the subtask string.
-        tool_name: which tool to use (key from TOOLS).
-        previous_results: mapping of earlier subtasks -> results.
-        model: LLM used for evaluation.
-        threshold: minimum score for acceptance.
-        max_retries: max retries before giving up.
-
-    Returns:
-        (final_result, score, is_correct)
+    Execute a single subtask.
+       - If no tool is selected, fallback to LLM
+       - Otherwise use registry to fetch tool and run it
+    Returns a dictionary in the standard tool JSON format.
     """
-    tool = TOOLS.get(tool_name)
-    if tool is None:
-        return (f"No suitable tool found for: {subtask}", 0.0, False)
 
-    # Build input: include previous results if available
-    if previous_results:
-        context = "\n".join(f"{t}: {r}" for t, r in previous_results.items())
-        tool_input = f"Context:\n{context}\n\nTask: {subtask}"
-    else:
-        tool_input = subtask
+    # Case 1: No tool selected → fall back to LLM
+    if not tool_name:
+        client = LLMClient(model)
+        reply = client.chat(subtask)
+        return {
+            "tool": "llm",
+            "subtask": subtask,
+            "ok": True,
+            "result": reply,
+            "error": None,
+        }
 
-    attempt = 0
-    final_result, final_score, is_correct = "", 0.0, False
+    # Case 2: Tool selected, but not found in registry
+    tool_spec = get_tool(tool_name)
+    if tool_spec is None:
+        return tool_error(tool_name, subtask, f"Tool '{tool_name}' not found.")
 
-    while attempt <= max_retries:
-        attempt += 1
-        try:
-            raw_result = tool.run(tool_input)
-        except Exception as e:
-            return (f"Error running tool {tool_name}: {e}", 0.0, False)
-
-        evaluated_result, score, ok = evaluate_subtask(subtask, raw_result, model=model)
-        final_result, final_score, is_correct = evaluated_result, score, ok
-
-        if is_correct and score >= threshold:
-            break  # accept result
-
-    return (final_result, final_score, is_correct)
-
+    # Case 3: Execute the tool
+    try:
+        return tool_spec.runner(subtask)
+    except Exception as e:
+        return tool_error(tool_name, subtask, str(e))

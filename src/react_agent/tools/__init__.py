@@ -1,11 +1,14 @@
-from react_agent.tools.calculator import Calculator
-from react_agent.tools.websearch import WebSearch
-from react_agent.tools.wikipedia import WikipediaTool
-from react_agent.tools.vectorsearch import VectorSearch
+# src/react_agent/tools/__init__.py
 
-TOOLS = {
-    "calculator": Calculator(),
-    "web_search": WebSearch(),
-    "wikipedia": WikipediaTool(),
-    "vector_search": VectorSearch(),
-}
+from .tool_registry import registry, register_tool, get_tool, list_tools
+from .registered_tools import register_default_tools
+
+# Automatically register all default tools when importing this package
+register_default_tools()
+
+__all__ = [
+    "registry",
+    "register_tool",
+    "get_tool",
+    "list_tools",
+]

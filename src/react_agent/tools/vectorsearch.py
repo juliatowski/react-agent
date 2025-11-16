@@ -1,8 +1,16 @@
-from langchain.text_splitter import CharacterTextSplitter
+try:
+    # Most recent ecosystem: separate langchain-text-splitters package
+    from langchain_text_splitters import CharacterTextSplitter
+except ImportError:
+    try:
+        # Some langchain versions
+        from langchain.text_splitters import CharacterTextSplitter
+    except ImportError:
+        # Older langchain versions
+        from langchain.text_splitter import CharacterTextSplitter
+
 from langchain_community.vectorstores import FAISS
 from langchain_community.embeddings import OllamaEmbeddings
-
-
 
 class VectorSearch:
     """

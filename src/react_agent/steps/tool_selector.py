@@ -1,53 +1,46 @@
-import json
+from typing import Dict, List
+from react_agent.tools import list_tools
 from react_agent.llm_client import LLMClient
-from react_agent.tools import TOOLS
 
 
-def assign_tools_to_subtasks(subtasks: list[str], model: str = "qwen2.5") -> dict[str, str]:
+def assign_tools_to_subtasks(subtasks: List[str], model: str = "qwen2.5"):
     """
-    Step 2: Ask the LLM which tool is best for each subtask.
-    Returns a dict mapping subtask -> tool_name.
+    Decide which tool to use for each subtask.
+    Uses the registry to access available tools.
+
+    Returns:
+      {subtask: tool_name or None}
     """
+
     client = LLMClient(model)
+    available = list_tools()
 
-    tool_descriptions = "\n".join(
-        f"- {name}: {tool.description}" for name, tool in TOOLS.items()
+    # Build tool descriptions for LLM ranking
+    tools_descr = "\n".join(
+        f"- {t.name}: {t.description}" for t in available
     )
 
-    prompt = f"""
+    mapping: Dict[str, str] = {}
+
+    for subtask in subtasks:
+        prompt = f"""
 You are a tool selector.
 
 Available tools:
-{tool_descriptions}
+{tools_descr}
 
-Return a JSON object where:
-- Keys are the exact subtasks.
-- Values are EXACT tool names from the list above.
-No explanations, no extra text.
+For the subtask below, choose the most appropriate tool by name.
+If none fits, reply: none
 
-Subtasks:
-{json.dumps(subtasks, indent=2)}
-
-Now return ONLY valid JSON:
+Subtask: "{subtask}"
 """
 
-    raw = client.chat(prompt)
+        choice = client.chat(prompt).strip().lower()
+        tool_names = [t.name.lower() for t in available]
 
-    # Try strict JSON parsing
-    try:
-        return json.loads(raw)
-    except Exception:
-        # Fallback: keyword heuristics per subtask, will be improved/extended later or use different method 
-        def heuristic(sub: str) -> str:
-            s = sub.lower()
-            if any(w in s for w in ["calculate", "sum", "multiply", "add", "divide", "evaluate", "number"]):
-                return "calculator"
-            if any(w in s for w in ["wikipedia", "wiki", "article", "encyclopedia"]):
-                return "wikipedia"
-            if any(w in s for w in ["search", "google", "latest", "news", "find"]):
-                return "web_search"
-            if any(w in s for w in ["knowledge base", "vector", "embedding", "semantic"]):
-                return "vector_search"
-            return "unknown"
+        if choice in tool_names:
+            mapping[subtask] = choice
+        else:
+            mapping[subtask] = None
 
-        return {sub: heuristic(sub) for sub in subtasks}
+    return mapping
