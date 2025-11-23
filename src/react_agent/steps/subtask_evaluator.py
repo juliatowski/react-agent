@@ -1,5 +1,6 @@
 import json
 from react_agent.llm_client import LLMClient
+from react_agent.logging_config import log, vlog, time_block
 
 
 def evaluate_subtask(subtask: str, result: str, model: str = "qwen2.5") -> str:
@@ -8,9 +9,10 @@ def evaluate_subtask(subtask: str, result: str, model: str = "qwen2.5") -> str:
     Returns a JSON string.
     """
 
-    client = LLMClient(model)
+    with time_block("SUBTASK_EVALUATOR"):
+        client = LLMClient(model)
 
-    prompt = f"""
+        prompt = f"""
 You are an evaluator.
 
 Subtask: {subtask}
@@ -26,23 +28,24 @@ Return ONLY valid JSON with fields:
 }}
 """
 
-    raw = client.chat(prompt)
+        raw = client.chat(prompt)
 
-    try:
-        parsed = json.loads(raw)
-        result_value = parsed.get("result", result)
-        score_value = float(parsed.get("score", 0.5))
-        correct_value = bool(parsed.get("is_correct", True))
+        try:
+            parsed = json.loads(raw)
+            result_value = parsed.get("result", result)
+            score_value = float(parsed.get("score", 0.5))
+            correct_value = bool(parsed.get("is_correct", True))
 
-    except Exception:
-        # fallback if LLM output is invalid
-        result_value = result
-        score_value = 0.5
-        correct_value = True
+        except Exception:
+            # fallback if LLM output is invalid
+            result_value = result
+            score_value = 0.5
+            correct_value = True
 
-    # JSON output
-    return json.dumps({
-        "result": result_value,
-        "score": score_value,
-        "is_correct": correct_value
-    })
+        out = json.dumps({
+            "result": result_value,
+            "score": score_value,
+            "is_correct": correct_value
+        })
+        vlog(f"SUBTASK_EVALUATOR output: {out}")
+        return out

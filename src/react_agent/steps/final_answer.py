@@ -1,6 +1,7 @@
 import json
 from typing import List
 from react_agent.llm_client import LLMClient
+from react_agent.logging_config import log, vlog, time_block
 
 
 def synthesize_final_answer(original_prompt: str, results: List[dict], model: str) -> str:
@@ -11,10 +12,13 @@ def synthesize_final_answer(original_prompt: str, results: List[dict], model: st
       - the JSON results of all subtasks
     """
 
-    client = LLMClient(model)
-    json_blob = json.dumps(results, indent=2)
+    with time_block("FINAL_ANSWER"):
+        client = LLMClient(model)
+        json_blob = json.dumps(results, indent=2)
 
-    prompt = f"""
+        vlog(f"FINAL_ANSWER sees results: {json_blob}")
+
+        prompt = f"""
 The user asked:
 "{original_prompt}"
 
@@ -27,6 +31,6 @@ Do NOT list subtasks.
 Just answer the user's question using the information.
 """
 
-    response = client.chat(prompt)
+        response = client.chat(prompt)
 
-    return response.strip()
+        return response.strip()

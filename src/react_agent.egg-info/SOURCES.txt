@@ -3,6 +3,7 @@ pyproject.toml
 src/react_agent/__init__.py
 src/react_agent/__main__.py
 src/react_agent/llm_client.py
+src/react_agent/logging_config.py
 src/react_agent.egg-info/PKG-INFO
 src/react_agent.egg-info/SOURCES.txt
 src/react_agent.egg-info/dependency_links.txt
@@ -17,7 +18,11 @@ src/react_agent/steps/subtask_handler.py
 src/react_agent/steps/subtask_splitter.py
 src/react_agent/steps/tool_selector.py
 src/react_agent/tools/__init__.py
+src/react_agent/tools/base.py
 src/react_agent/tools/calculator.py
+src/react_agent/tools/json_protocol.py
+src/react_agent/tools/registered_tools.py
+src/react_agent/tools/tool_registry.py
 src/react_agent/tools/vectorsearch.py
 src/react_agent/tools/websearch.py
 src/react_agent/tools/wikipedia.py

@@ -1,0 +1,36 @@
+{
+  "prompts": [
+    {
+      "id": "regulation_01",
+      "task": "Provide an overview of the global regulatory landscape for artificial intelligence as of 2024. Include the key points of the EU AI Act, major policies in the United States, and notable developments in Asia. Summarize the latest news events related to AI regulations from the last few months and outline their potential impact on innovation."
+    },
+    {
+      "id": "finance_01",
+      "task": "Analyze the performance of the semiconductor industry over the past 12 months. Include major stock price movements for companies like Nvidia, AMD, and Intel. Summarize recent news headlines that influenced these movements and explain in simple terms how macroeconomic factors such as inflation and interest rates contributed."
+    },
+    {
+      "id": "history_01",
+      "task": "Explain the origin and development of quantum computing, starting with Richard Feynman’s ideas and leading up to modern efforts by IBM and Google. Describe the main scientific breakthroughs and include a short summary of the most influential researchers and their contributions."
+    },
+    {
+      "id": "research_01",
+      "task": "Based on the available AI research corpus, summarize the major trends in the development of neural architecture search (NAS) systems. Compare early NAS approaches with more recent techniques such as differentiable search, evolutionary strategies, and reinforcement-learning-based methods. Highlight the latest breakthroughs and open research questions."
+    },
+    {
+      "id": "medical_01",
+      "task": "Describe how CRISPR gene-editing technology works, including the role of Cas9. Provide historical context on how the technique was discovered, key experiments that confirmed its effectiveness, and major ethical issues currently being debated in the scientific community."
+    },
+    {
+      "id": "economy_01",
+      "task": "Evaluate the economic impact of rising interest rates on small and medium-sized businesses in Europe. Include data trends from the past two years, summarize relevant financial news, and explain how inflation expectations and monetary policy affect borrowing costs. Provide a short forecast based on current macroeconomic indicators."
+    },
+    {
+      "id": "llm_research_01",
+      "task": "Find and summarize recurring themes in the research corpus related to large language models, including model scaling laws, emergent abilities, and training efficiency methods. Provide background where necessary and connect these ideas with trends in recent AI research."
+    },
+    {
+      "id": "planning_01",
+      "task": "I am planning to build a small machine-learning consulting business. Identify the key steps I need to take in terms of market research, company registration, legal requirements in the EU, pricing strategies, marketing channels, and tools or technologies I should be familiar with. Include any recent updates about the industry that might affect this plan."
+    }
+  ]
+}

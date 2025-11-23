@@ -1,5 +1,7 @@
 import json
 import requests
+from react_agent.logging_config import vlog
+
 
 class LLMClient:
 
@@ -12,6 +14,8 @@ class LLMClient:
         Sending a prompt to Ollama and collect the streaming response into one string, 
         so chunks are being processed as they arrive (better for handling large output)
         """
+        vlog(f"LLM prompt (first 200 chars): {prompt[:200]}")
+
         with requests.post(
             f"{self.host}/api/generate",
             json={"model": self.model, "prompt": prompt},
@@ -27,4 +31,6 @@ class LLMClient:
                 output += data.get("response", "")
                 if data.get("done", False):
                     break
+
+            vlog(f"LLM response (first 200 chars): {output[:200]}")
             return output.strip()

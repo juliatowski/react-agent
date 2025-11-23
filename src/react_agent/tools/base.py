@@ -1,4 +1,6 @@
 from __future__ import annotations
+from react_agent.logging_config import log, vlog, time_block
+
 
 from abc import ABC, abstractmethod
 from typing import Any, Dict
@@ -39,3 +41,5 @@ class BaseTool(ABC):
             "name": self.name,
             "description": self.description,
         }
+        vlog(f"Tool metadata: {meta}")
+

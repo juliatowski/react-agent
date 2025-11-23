@@ -1,4 +1,11 @@
 
+from react_agent.tools.tool_registry import register_tool
+from react_agent.tools.calculator import Calculator
+from react_agent.tools.websearch import WebSearch
+from react_agent.tools.wikipedia import WikipediaTool
+from react_agent.tools.vectorsearch import VectorSearch
+from react_agent.logging_config import log, vlog
+
 """
 This file is the ONLY place where tools are registered.
 
@@ -9,15 +16,12 @@ This file is the ONLY place where tools are registered.
 
 """
 
-from react_agent.tools.tool_registry import register_tool
-from react_agent.tools.calculator import Calculator
-from react_agent.tools.websearch import WebSearch
-from react_agent.tools.wikipedia import WikipediaTool
-from react_agent.tools.vectorsearch import VectorSearch
-
 
 def register_default_tools(model: str = "qwen2.5"):
+    log(f"Registering default tools (model={model})")
     """Register all default tools into the global registry."""
+    vlog("Default tools registered.")
+
 
     register_tool(
         name="calculator",
