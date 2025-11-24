@@ -1,18 +1,8 @@
-from react_agent.logging_config import log, vlog  
-
-try:
-    # Most recent ecosystem: separate langchain-text-splitters package
-    from langchain_text_splitters import CharacterTextSplitter
-except ImportError:
-    try:
-        # Some langchain versions
-        from langchain.text_splitters import CharacterTextSplitter
-    except ImportError:
-        # Older langchain versions
-        from langchain.text_splitter import CharacterTextSplitter
-
+from react_agent.logging_config import vlog
+from langchain_text_splitters import CharacterTextSplitter
 from langchain_community.vectorstores import FAISS
-from langchain_community.embeddings import OllamaEmbeddings
+from langchain_ollama import OllamaEmbeddings
+
 
 class VectorSearch:
     """
@@ -22,7 +12,12 @@ class VectorSearch:
     name = "vector_search"
     description = "Search a local knowledge base using embeddings"
 
-    def __init__(self, model: str = "qwen2.5", data_file: str = "src/data/ai_research.txt", chunk_size: int = 200):
+    def __init__(
+        self,
+        model: str = "qwen2.5",
+        data_file: str = "src/data/ai_research.txt",
+        chunk_size: int = 200,
+    ):
         # Load text
         with open(data_file, "r", encoding="utf-8") as f:
             text = f.read()

@@ -33,7 +33,7 @@ def main():
         print(f"ID:   {pid}")
         print(f"Task: {task}\n")
 
-        answer = react_pipeline(task, model="qwen3.0")
+        answer = react_pipeline(task, model="llama3.2:1b")
 
         print("Answer:")
         print(answer)
