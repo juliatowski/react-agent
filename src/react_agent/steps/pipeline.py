@@ -9,6 +9,7 @@ from react_agent.logging_config import log, vlog, time_block
 
 
 def react_pipeline(original_prompt: str, model: str = "qwen2.5") -> str:
+
     """
     Full ReAct-inspired pipeline:
       1. Split user prompt into subtasks

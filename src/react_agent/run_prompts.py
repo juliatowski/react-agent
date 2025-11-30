@@ -7,7 +7,7 @@ from react_agent.steps.pipeline import react_pipeline
 
 def main():
     # 0 = no logging, 1 = normal logging, 2 = verbose logging
-    set_logging(1)
+    set_logging(2)
 
     path = Path("src/data/test_prompts.json")
 
