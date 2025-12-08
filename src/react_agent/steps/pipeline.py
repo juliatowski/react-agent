@@ -4,11 +4,14 @@ from react_agent.steps.subtask_splitter import split_into_subtasks
 from react_agent.steps.tool_selector import assign_tools_to_subtasks
 from react_agent.steps.subtask_handler import execute_subtasks
 from react_agent.steps.final_answer import synthesize_final_answer
+from react_agent.llm_config import get_model
+
 
 from react_agent.logging_config import log, vlog, time_block
 
 
-def react_pipeline(original_prompt: str, model: str = "qwen2.5") -> str:
+def react_pipeline(original_prompt: str, model: str = None) -> str:
+    model = model or get_model("pipeline")
 
     """
     Full ReAct-inspired pipeline:

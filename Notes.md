@@ -4,3 +4,23 @@ When switching from quen 2.5 to ollama 3.2, 3,2 seems to overengieer some of the
 to 
 
 {"subtasks": ["Here are the first 5 subtasks to help you plan your 3-day itinerary for Paris:", "**Define travel dates**: Determine when you'd like to travel to Paris and estimate how many days you'll need for the city.", "**Research popular attractions**: Make a list of must-see landmarks, museums, and other attractions you want to visit in Paris. Consider opening hours, ticket prices, and any special events or exhibitions that might affect your plans.", "**Choose accommodations**: Decide on where you'd like to stay overnight in Paris, taking into account factors such as location, price range, and amenities (e.g., breakfast options, accessibility).", "**Create a daily schedule**: Break down your 3-day itinerary into individual days, including morning and evening routines, free time for exploration or relaxation, and any planned activities or tours."]}
+
+
+should the tool selector really run the ppromt on each tool and then rank or rank only based on provided description
+
+tool selector does not work with light weight ollama 3.2, needs stronger model 
+
+Add to readme: 
+setting for logging
+
+add to readme: if adding new tools, add descrition in registered tool for choosing the right tool
+
+add to readme: setting model 
+
+Add read me: 
+python -m react_agent.run_prompts
+
+
+
+Make a file where you can choose model based on step
+
