@@ -9,7 +9,7 @@ def main():
     # 0 = no logging, 1 = normal logging, 2 = verbose logging
     set_logging(2)
 
-    path = Path("src/data/test_prompts.json")
+    path = Path(__file__).resolve().parent / "test_prompts.json"
 
     if not path.exists():
         print(f"ERROR: Prompt file not found: {path}")
