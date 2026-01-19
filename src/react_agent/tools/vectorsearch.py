@@ -4,23 +4,26 @@ from langchain_community.vectorstores import FAISS
 from langchain_ollama import OllamaEmbeddings
 
 
-class VectorSearch:
-    """
-    Simplified FAISS-based vector search using LangChain.
-    """
+from pathlib import Path
 
+class VectorSearch:
     name = "vector_search"
     description = "Search a local knowledge base using embeddings"
 
     def __init__(
         self,
         model: str = "qwen2.5",
-        data_file: str = "src/data/ai_research.txt",
+        data_file: str = None,
         chunk_size: int = 200,
     ):
+        # Build correct absolute path
+        if data_file is None:
+            data_file = Path(__file__).resolve().parents[2] / "data" / "ai_research.txt"
+
         # Load text
         with open(data_file, "r", encoding="utf-8") as f:
             text = f.read()
+
 
         # Split into chunks
         splitter = CharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=50)

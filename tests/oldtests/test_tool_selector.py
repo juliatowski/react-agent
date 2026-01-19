@@ -1,4 +1,4 @@
-from react_agent.steps import tool_selector
+from react_agent.steps import OLD_tool_selector
 
 
 def test_assign_tools_to_subtasks_integration():
@@ -8,7 +8,7 @@ def test_assign_tools_to_subtasks_integration():
         "Search latest AI news on the web",
     ]
 
-    mapping = tool_selector.assign_tools_to_subtasks(subtasks, model="qwen2.5")
+    mapping = OLD_tool_selector.assign_tools_to_subtasks(subtasks, model="qwen2.5")
 
     assert isinstance(mapping, dict)
     assert all(s in mapping for s in subtasks)

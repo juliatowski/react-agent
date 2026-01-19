@@ -4,6 +4,7 @@ from react_agent.steps.pipeline import react_pipeline
 
 #takes user promt and logging configuration to run model
 def main():
+    
     parser = argparse.ArgumentParser()
     parser.add_argument("prompt", type=str, help="User prompt")
     parser.add_argument("--log", action="store_true", help="Enable normal logging")

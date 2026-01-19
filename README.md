@@ -68,6 +68,17 @@ src/
 └── tests/                   # Tests for individual parts of the code
 ```
 
+
+### LLM Configuration
+
+The used LLM models can be configurated in react_agent/llm_config.py, including a default model and per-component/ function overrides:
+
+Set a global default model
+
+Optionally assign models for: splitter, selector, executor, final answer
+
+Pipeline components automatically read from this config
+
 ## Testing
 
 The tests folder contains integration and unit tests for individual components of the system. These tests can be run independently, without executing the entire pipeline.

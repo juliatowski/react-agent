@@ -11,6 +11,8 @@ from react_agent.logging_config import log, vlog, time_block
 
 
 def react_pipeline(original_prompt: str, model: str = None) -> str:
+    
+    #add option to parse model in main/promt?
     model = model or get_model("pipeline")
 
     """
@@ -37,6 +39,8 @@ def react_pipeline(original_prompt: str, model: str = None) -> str:
             subtasks = [original_prompt]
 
         vlog(f"subtasks (list) = {subtasks}")
+
+
 
     # 2) TOOL SELECTION
     with time_block("TOOL_SELECTOR"):

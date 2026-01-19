@@ -30,6 +30,9 @@ def split_into_subtasks(goal: str, model: str = "qwen2.5", max_subtasks: int = 5
 
         raw = client.chat(f"{system_prompt}\n\nGoal: {goal}\n\nSubtasks:")
 
+        vlog(f"[SUBTASK_SPLITTER] LLM output:\n{raw}")
+
+
         steps = []
         for line in raw.splitlines():
             line = line.strip(" \t-•")
@@ -42,6 +45,10 @@ def split_into_subtasks(goal: str, model: str = "qwen2.5", max_subtasks: int = 5
             steps.append(line.strip())
 
         steps = steps[:max_subtasks]
+
+
+        log(f"[SUBTASK_SPLITTER] Extracted {len(steps)} subtask(s)")
+
 
         # JSON output
         result = json.dumps({"subtasks": steps})

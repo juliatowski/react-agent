@@ -1,7 +1,7 @@
-# Central configuration for all LLM-related components.
-
+# Config for all LLM models used in the React Agent framework
 # Global default model used everywhere unless explicitly overridden
 DEFAULT_MODEL = "llama3.2:1b"
+
 
 # Optional per-component model overrides
 COMPONENT_MODELS = {

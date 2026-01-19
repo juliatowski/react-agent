@@ -1,89 +1,122 @@
 import json
-from typing import Dict, List
+from typing import Dict, List, Any
 from react_agent.tools import list_tools
 from react_agent.llm_client import LLMClient
 from react_agent.logging_config import log, vlog, time_block
+from react_agent.logging_config import set_logging
+
 
 
 def assign_tools_to_subtasks(subtasks: List[str], model: str = "qwen2.5") -> Dict[str, str | None]:
     """
-    Decide which tool to use for each subtask.
-
-    Behaviour:
-      - For each subtask, evaluate ALL tools.
-      - Ask the LLM for a score between 0.0 and 1.0 for how well the tool fits.
-      - Pick the tool with the highest score.
-      - If all scores are 0.0 or evaluation fails, return None for that subtask.
-
-    Input:
-      subtasks: list of subtask strings
-
-    Output:
-      mapping: dict {subtask: best_tool_name or None}
+      - Run the subtask with all tools.
+      - Collect outputs from every tool.
+      - Log all tool outputs (full).
+      - Log available tools list.
+      - Ask an LLM evaluator which output is best.
+      - Choose the best-scoring tool.
     """
 
     with time_block("TOOL_SELECTOR"):
-        client = LLMClient(model)
+        print("hello")
         tools = list_tools()
-
         if not tools:
             log("TOOL_SELECTOR: no tools available")
-            return {subtask: None for subtask in subtasks}
+            return {s: None for s in subtasks}
 
-        tool_infos = [(t.name, t.description) for t in tools]
-        vlog(f"TOOL_SELECTOR available tools: {[name for name, _ in tool_infos]}")
+        # Log available tools
+        log("\n=== AVAILABLE TOOLS ===")
+        for t in tools:
+            log(f"- {t.name}: {t.description}")
+        log("========================\n")
 
-        mapping: Dict[str, str | None] = {}
+        mapping = {}
+        evaluator = LLMClient(model)
 
         for subtask in subtasks:
-            vlog(f"TOOL_SELECTOR evaluating subtask: {subtask}")
-            scores_for_subtask: Dict[str, float] = {}
+            log(f"\n\n===============================")
+            log(f"Evaluating Subtask:\n{subtask}")
+            log("===============================\n")
 
-            for tool_name, tool_desc in tool_infos:
-                prompt = f"""
-You are evaluating how suitable a tool is for a subtask.
+            tool_outputs = {}
 
-Subtask:
-"{subtask}"
+            # 1) RUN ALL TOOLS
+            for tool in tools:
+                try:
+                    out = tool.runner(subtask)
+                except Exception as e:
+                    out = f"[ERROR running {tool.name}: {e}]"
 
-Candidate tool:
-Name: {tool_name}
-Description: {tool_desc}
 
-On a scale from 0.0 to 1.0, how suitable is this tool to solve the subtask?
+                # store full output
+                tool_outputs[tool.name] = out
 
-Respond ONLY with valid JSON of the form:
+                # log full output
+                log(f"Full Output from {tool.name}:\n{out}\n")
+                log("----------------------------------------")
+
+            # 2) LET AI EVALUATE ALL OUTPUTS
+            best_tool = evaluate_tool_outputs(subtask, tool_outputs, evaluator)
+
+            log(f"\n📌 BEST TOOL for '{subtask}': {best_tool}\n")
+            mapping[subtask] = best_tool
+
+        return mapping
+
+
+def evaluate_tool_outputs(subtask: str, outputs: Dict[str, str], evaluator: LLMClient) -> str | None:
+    """
+    Ask the LLM to judge all tool outputs and pick the best one.
+    Returns tool_name or None.
+    """
+
+    formatted = json.dumps(outputs, indent=2)
+
+    prompt = f"""
+You are evaluating which tool produced the best answer for a subtask.
+
+### Subtask
+{subtask}
+
+### Tool Outputs
+{formatted}
+
+### Instructions
+For each tool:
+- Consider correctness, usefulness, completeness, and relevance.
+- Score each output 0.0–1.0.
+
+Respond with STRICT JSON:
 {{
-  "tool": "{tool_name}",
-  "score": <float between 0.0 and 1.0>
+  "winner": "<tool name or null>",
+  "scores": {{
+      "<tool>": float,
+      "<tool>": float
+  }}
 }}
 """
-                raw = client.chat(prompt)
 
-                try:
-                    parsed = json.loads(raw)
-                    score = float(parsed.get("score", 0.0))
-                    score = max(0.0, min(1.0, score))  # clamp to [0.0, 1.0]
-                except Exception:
-                    score = 0.0
+    # Log the evaluator prompt (full)
+    vlog("\n[EVALUATOR PROMPT — FULL]\n" + prompt + "\n")
 
-                scores_for_subtask[tool_name] = score
-                vlog(f"Score for tool='{tool_name}' on subtask='{subtask}': {score}")
+    # Call evaluator LLM
+    raw = evaluator.chat(prompt)
 
-            # pick best tool by score
-            if scores_for_subtask:
-                best_tool = max(scores_for_subtask, key=scores_for_subtask.get)
-                best_score = scores_for_subtask[best_tool]
-                # if all scores are 0.0, treat as no suitable tool
-                if best_score == 0.0:
-                    best_tool_name: str | None = None
-                else:
-                    best_tool_name = best_tool
-                log(f"Best tool for subtask='{subtask}' → {best_tool_name} (score={best_score})")
-            else:
-                best_tool_name = None
+    # Log raw evaluator output (full)
+    log("\n[EVALUATOR RAW OUTPUT — FULL]")
+    log(raw)
+    log("====================================\n")
 
-            mapping[subtask] = best_tool_name
+    # Parse JSON
+    try:
+        parsed = json.loads(raw)
 
-        vlog(f"TOOL_SELECTOR mapping: {mapping}")
-        return mapping
+        #Log parsed result
+        log(f"[EVALUATOR PARSED] Winner = {parsed.get('winner')}")
+        log(f"[Scores] {parsed.get('scores')}\n")
+
+        return parsed.get("winner", None)
+
+    except Exception:
+        log(f"[EVALUATOR JSON PARSE FAILED] Raw output was:\n{raw}\n")
+        return None

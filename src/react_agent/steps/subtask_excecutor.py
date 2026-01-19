@@ -12,7 +12,7 @@ def execute_single_subtask(subtask: str, tool_name: str, model: str) -> dict:
        - Otherwise use registry to fetch tool and run it
     Returns a dictionary in the standard tool JSON format.
     """
-
+    
     with time_block("SUBTASK_EXECUTOR"):
         log(f"Executing subtask: '{subtask}' with tool={tool_name}")
 

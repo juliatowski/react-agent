@@ -1,4 +1,4 @@
-from react_agent.steps.tool_selector import assign_tools_to_subtasks
+from react_agent.steps.OLD_tool_selector import assign_tools_to_subtasks
 from react_agent.logging_config import set_logging
 
 MODEL = "qwen2.5"
