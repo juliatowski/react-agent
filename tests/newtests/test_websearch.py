@@ -1,6 +1,24 @@
+# Command to run this test:
+# PYTHONPATH=src python tests/newtests/test_websearch.py
+
 import time
+from pathlib import Path
 
 from react_agent.tools.websearch import WebSearch
+
+
+DATA_DIR = Path("data")
+DATA_DIR.mkdir(exist_ok=True)
+
+
+def slugify(text: str) -> str:
+    return (
+        text.lower()
+        .replace(" ", "_")
+        .replace("/", "_")
+        .replace("?", "")
+        .replace(",", "")
+    )
 
 
 def run_query(ws: WebSearch, query: str):
@@ -14,10 +32,15 @@ def run_query(ws: WebSearch, query: str):
     print(f"TIME: {elapsed:.2f}s")
     print(f"OUTPUT LENGTH: {len(result)} chars\n")
 
-    # Print only the first ~800 chars so
-    #  your terminal doesn't explode
+    # Save full output to file
+    filename = DATA_DIR / f"websearch_{slugify(query)[:60]}.txt"
+    filename.write_text(result, encoding="utf-8")
+
+    print(f"FULL OUTPUT SAVED TO: {filename}")
+
+    # Print only a preview
     preview = result[:800]
-    print("PREVIEW:")
+    print("\nPREVIEW:")
     print(preview)
     print("\n")
 
