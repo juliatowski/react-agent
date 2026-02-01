@@ -1,5 +1,5 @@
 from __future__ import annotations
-from react_agent.llm_client import LLMClient
+from react_agent.llm.llm_client import LLMClient
 from react_agent.tools.websearch import WebSearch
 
 _STRIP = "`\"'\n\t "

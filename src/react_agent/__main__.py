@@ -1,6 +1,6 @@
 import argparse
-from react_agent.logging_config import set_logging
-from react_agent.steps.pipeline import react_pipeline
+from react_agent.config.logging_config import set_logging
+from react_agent.agent.pipeline import react_pipeline
 
 #takes user promt and logging configuration to run model
 def main():

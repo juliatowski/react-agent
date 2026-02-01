@@ -1,10 +1,10 @@
 from ddgs import DDGS
-from react_agent.logging_config import vlog
+from react_agent.config.logging_config import vlog
 
 
 class WebSearch:
     name = "web_search"
-    description = "Search the web using DuckDuckGo (no API key)."
+    description = "Search the web using DuckDuckGo"
 
     def __init__(
         self,

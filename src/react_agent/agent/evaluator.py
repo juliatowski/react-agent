@@ -1,6 +1,6 @@
 import json
-from react_agent.llm_client import LLMClient
-from react_agent.logging_config import log, vlog, time_block
+from react_agent.llm.llm_client import LLMClient
+from react_agent.config.logging_config import log, vlog, time_block
 
 
 def evaluate_subtask(subtask: str, result: str, model: str = "qwen2.5") -> str:

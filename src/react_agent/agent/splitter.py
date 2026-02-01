@@ -1,6 +1,6 @@
 import json
-from react_agent.llm_client import LLMClient
-from react_agent.logging_config import log, vlog, time_block
+from react_agent.llm.llm_client import LLMClient
+from react_agent.config.logging_config import log, vlog, time_block
 
 
 def split_into_subtasks(goal: str, model: str = "qwen2.5", max_subtasks: int = 5) -> str:

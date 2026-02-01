@@ -1,5 +1,5 @@
 import wikipedia
-from react_agent.logging_config import log, vlog  # <-- add this
+from react_agent.config.logging_config import log, vlog  # <-- add this
 
 
 class WikipediaTool:

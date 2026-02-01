@@ -1,4 +1,4 @@
-from react_agent.logging_config import log, vlog
+from react_agent.config.logging_config import log, vlog
 
 from typing import Callable, Dict, List, Optional
 from dataclasses import dataclass

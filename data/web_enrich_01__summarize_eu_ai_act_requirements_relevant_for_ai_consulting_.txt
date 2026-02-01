@@ -1,0 +1,16 @@
+SUBTASK:
+Summarize EU AI Act requirements relevant for AI consulting companies.
+
+TIME: 19.20s
+
+URLS USED:
+- https://en.wikipedia.org/wiki/Artificial_Intelligence_Act
+- https://enterprise.gov.ie/en/what-we-do/innovation-research-development/artificial-intelligence/eu-ai-act/
+- https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai
+
+FILTERED RESULT:
+
+{"relevant_points":["Risk categories - unacceptable, high, limited, minimal","Applications with unacceptable risk are banned.","High-risk applications must comply with security, transparency, and quality obligations.","Limited-risk applications only have transparency obligations.","Minimal-risk applications are not regulated.","General-purpose AI is considered to be in the general-purpose AI category","Unacceptable risk includes social scoring leading to disproportionate detrimental or unfavourable treatment","High-risk applications include subliminal techniques likely to cause significant harm","Low-risk includes profiling individuals for prediction of criminal activity","Minimal-risk applications do not require transparency obligations","General-purpose AI categories - unacceptable, high, limited, minimal"]}{ 
+"key_quotes":["Risk categories","Applications with unacceptable risk are banned.","High-risk applications must comply with security, transparency, and quality obligations.","Limited-risk applications only have transparency obligations.","Minimal-risk applications are not regulated.","Gen"]
+"missing_info":["Specific exemptions for AI used in military, national security, research purposes, or non-professional use. Specific transparency requirements for certain AI applications. Unmentioned exemptions from the AI Act itself.""] 
+"}

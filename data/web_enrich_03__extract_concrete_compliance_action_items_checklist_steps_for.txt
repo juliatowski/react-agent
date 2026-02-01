@@ -1,0 +1,13 @@
+SUBTASK:
+Extract concrete compliance action items/checklist steps for companies offering AI services in the EU.
+
+TIME: 13.83s
+
+URLS USED:
+- https://www.vanta.com/collection/grc/internal-compliance-audit
+- https://www.turian.ai/blog/ai-trends-to-watch-in-2025
+- https://www.customs-declarations.uk/making-trade-and-ai-work-together-insights-from-the-wto-world-trade-report-2025/
+
+FILTERED RESULT:
+
+{"relevant_points": [], "key_quotes": ["Meet Your New Digital Colleague – The Rise of AI Agents", "AI Trends to Watch in 2025: A Guide for Businesses Artificial Intelligence (AI) is evolving at breakneck speed and becoming a cornerstone of modern business.", "The impact on productivity could be enormous. Gartner predicts that by 2028, at least 15% of all daily work decisions will be made autonomously by AI agents – up from less than 1% in 2024."], "missing_info": ["URLs provided for each subtask are not explicitly mentioned in the given text but can be inferred as necessary for further research on specific topics such as 'AI Trends to Watch in 2025: A Guide for Businesses Artificial Intelligence (AI) is evolving at breakneck speed and becoming a cornerstone of modern business.'""]

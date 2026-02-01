@@ -1,4 +1,4 @@
-from react_agent.llm_client import LLMClient
+from react_agent.llm.llm_client import LLMClient
 from react_agent.tools.calculator import Calculator
 
 

@@ -1,6 +1,6 @@
 import json
 import requests
-from react_agent.logging_config import vlog
+from react_agent.config.logging_config import vlog
 
 
 class LLMClient:

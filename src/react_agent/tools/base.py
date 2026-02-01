@@ -1,5 +1,5 @@
 from __future__ import annotations
-from react_agent.logging_config import log, vlog, time_block
+from react_agent.config.logging_config import log, vlog, time_block
 
 
 from abc import ABC, abstractmethod

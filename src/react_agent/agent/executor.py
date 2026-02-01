@@ -1,8 +1,8 @@
 import json
-from react_agent.llm_client import LLMClient
+from react_agent.llm.llm_client import LLMClient
 from react_agent.tools import get_tool
 from react_agent.tools.json_protocol import tool_error
-from react_agent.logging_config import log, vlog, time_block
+from react_agent.config.logging_config import log, vlog, time_block
 
 
 def execute_single_subtask(subtask: str, tool_name: str, model: str) -> dict:

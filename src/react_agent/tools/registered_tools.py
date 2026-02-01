@@ -3,7 +3,7 @@ from react_agent.tools.calculator import Calculator
 from react_agent.tools.websearch import WebSearch
 from react_agent.tools.wikipedia import WikipediaTool
 from react_agent.tools.vectorsearch import VectorSearch
-from react_agent.logging_config import log, vlog
+from react_agent.config.logging_config import log, vlog
 
 """
 This file is the ONLY place where tools are registered.

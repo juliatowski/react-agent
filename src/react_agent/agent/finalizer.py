@@ -1,7 +1,7 @@
 import json
 from typing import List
-from react_agent.llm_client import LLMClient
-from react_agent.logging_config import log, vlog, time_block
+from react_agent.llm.llm_client import LLMClient
+from react_agent.config.logging_config import log, vlog, time_block
 
 
 def synthesize_final_answer(original_prompt: str, results: List[dict], model: str) -> str:

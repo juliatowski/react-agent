@@ -1,6 +1,6 @@
 import requests
 import trafilatura
-from react_agent.logging_config import log
+from react_agent.config.logging_config import log
 
 
 def extract_text_from_url(

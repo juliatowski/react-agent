@@ -1,4 +1,4 @@
-from react_agent.logging_config import vlog
+from react_agent.config.logging_config import vlog
 from langchain_text_splitters import CharacterTextSplitter
 from langchain_community.vectorstores import FAISS
 from langchain_ollama import OllamaEmbeddings
